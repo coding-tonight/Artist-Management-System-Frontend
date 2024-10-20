@@ -1,0 +1,5 @@
+export { default as HomeView } from './Home/HomeView.vue'
+export { default as LoginView } from './Auth/LoginView.vue'
+export { default as RegisterView } from './Auth/RegisterView.vue'
+export { default as DashboardView } from './Dashboard/DashboardView.vue'
+export { default as ArtistView } from './Artists/ArtistView.vue'
