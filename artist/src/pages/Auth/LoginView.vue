@@ -1,9 +1,9 @@
 
 <template>
   <section class="flex w-[100vw]">
-    <div class="w-[50%] flex items-center">
-       <div class="w-[60%] mx-auto">
-         <!-- <img src="/logo.png" alt="" height="100" /> -->
+    <img src="/logo.png" alt="" height="300" width="100" class="absolute top-2 left-2" />
+    <div class="w-[100%] sm:w-[50%] flex items-center">
+       <div class="sm:w-[60%] mx-auto">
          <h1 class="mb-5 text-center text-xl">Login to your account</h1>
          <a-form
            :model="formState"
@@ -39,7 +39,8 @@
        
            <a-form-item>
              <a-button 
-                :disabled="disabled" 
+                :disabled="loading" 
+                :loading="loading"
                 block 
                 type="primary" 
                 html-type="submit" 
@@ -49,31 +50,41 @@
              </a-button>
            </a-form-item>
          </a-form>
+
+         <a-divider> or sign up</a-divider>
+
+         <a-button block>
+            <RouterLink to="/register">
+              Register
+            </RouterLink>
+         </a-button>
        </div>
     </div>
-    <div class="login-background w-[50%] h-[100vh]">
+    <div class="login-background w-[50%] hidden sm:block h-[100vh]">
     </div>
   </section>
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { reactive, ref } from 'vue';
+
+import { authStore } from '@/services/pinia/store/auth';
 
 const formState = reactive({
   email: '',
   password: ''
 })
+const loading = ref(false)
+const store = authStore()
 
-const onFinish = values => {  
-  console.log('Success:', values);
+const onFinish = async values => {  
+    await store.signIn(values, loading)
 };
+
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo);
 };
 
-const disabled = computed(() => {
-  return !(formState.email && formState.password);
-});
 </script>
 
 

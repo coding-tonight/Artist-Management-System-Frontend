@@ -3,14 +3,14 @@
  * @param {string} value 
  * @returns 
  */
-export const encodeBase64 = (value) => atob(value)
+export const encodeBase64 = (value) => btoa(value)
 
 /**
  * decode the base64 to string
  * @param {string} value 
  * @returns 
  */
-export const decodeBase64 = (value) => btoa(value)
+export const decodeBase64 = (value) => atob(value)
 
 /**
  * helper function to retrieve token
@@ -22,4 +22,10 @@ export const getToken = () => {
 
   return null
 }
+
+export const mapDate = (date) => {
+  return `${date.$y}-${date.$M}-${date.$D}`
+}
+
+
 

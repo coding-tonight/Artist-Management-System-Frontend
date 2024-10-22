@@ -1,17 +1,18 @@
 import { createRouter , createWebHistory } from 'vue-router'
 
 import dashboardRoutes from './dashboard'
-import { RegisterView, LoginView } from '@/pages'
+import guestRoutes from './routes'
+import { NotFoundView } from '@/pages'
 
 const routes = [
-  { path: '/login', component: LoginView, name: 'login' },
-  { path: '/register', component: RegisterView, name: 'register' },
+  ...guestRoutes,
   ...dashboardRoutes,
+  { path: '/:pathMatch(.*)*', component: NotFoundView }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes, 
 })
 
 function nextFactory(context, middleware, index) {

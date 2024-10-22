@@ -1,7 +1,9 @@
+import axios from "axios"
+
 import { getToken } from "@/helpers/common"
 
 const httpClient = axios.create({
-    baseURL: import.meta.VITE_BASE_API_URL,
+    baseURL: import.meta.env.VITE_BASE_API_URL,
     timeout: 1000,
     headers: {'Content-Type': 'application/json'}
 })
@@ -9,7 +11,7 @@ const httpClient = axios.create({
 httpClient.interceptors.request.use(config => {
     const token = getToken()
      if(token) {
-        config.headers.common['Authorization'] = `bearer ${token}`
+        config.headers['Authorization'] = `bearer ${token}`
      }
      return config
 }, error => {

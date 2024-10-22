@@ -2,7 +2,7 @@
   <a-layout>
       <Sidebar :collapsed="collapsed" />
       <a-layout>
-        <a-layout-header style="background: #fff; padding: 0" class="flex items-center justify-between ps-1">
+        <a-layout-header style="background: #fff; padding: 0;" class="flex items-center justify-between ps-1">
           <a-button  v-if="collapsed"
               class="trigger border-none shadow-none"
               @click="() => (collapsed = !collapsed)">
@@ -13,7 +13,7 @@
             <MenuUnfoldOutlined  />
           </a-button>
           
-            <a-button class="border-none shadow-none">
+            <a-button class="border-none shadow-none" @click="user.logOut()">
               <LoginOutlined  />
             </a-button>
         </a-layout-header>
@@ -21,7 +21,6 @@
         <a-layout-content
           :style="{ margin: '24px 16px',
                     padding: '24px', 
-                    background: '#fff', 
                     minHeight: 'calc(100vh - 40px)' 
                   }"
         >
@@ -35,8 +34,11 @@
  import { ref } from 'vue'
 
  import { LoginOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
+ import { authStore } from '@/services/pinia/store/auth';
 
  import { Sidebar } from '@/components';
+
+ const user = authStore()
 
  const collapsed = ref(false)
 </script>

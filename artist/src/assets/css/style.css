@@ -1,2 +1,6 @@
 @import './base.css';
 @import './tailwind.css';
+
+.artist-btn {
+    background-color: var(--primary-color);
+}

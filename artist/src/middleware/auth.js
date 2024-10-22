@@ -1,4 +1,5 @@
 import { getToken } from "@/helpers/common";
+import { authStore } from "@/services/pinia/store/auth";
 
 
 /**
@@ -10,13 +11,20 @@ import { getToken } from "@/helpers/common";
 
 export default function auth({ next, router, to }) {
    const token = getToken()
+   const store = authStore()
 
    if(!token) return router.push({ name: 'login' })
 
     const { authorize } = to.meta
 
-    if(authorize) {
-      console.log('hello')
+    if (!authorize) {
+      next()
+      return 
     }
-    next()
+    
+    if(authorize && authorize.includes(store.me.role)) {
+        next()
+    } else {
+       window.location.replace('/unauthorized')
+    }
 }
