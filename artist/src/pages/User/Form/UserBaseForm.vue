@@ -12,7 +12,7 @@
              @finishFailed="onFinishFailed"
            >
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                   label="First Name"
                   name="first_name"
@@ -161,7 +161,7 @@
                      html-type="submit" 
                      :class="{'artist-btn': loading }"
                    >
-                    Create
+                   {{ route.params && route.params.id ? 'Update': 'Create'}}
                   </a-button>
                   <RouterLink to="/users">
                     <a-button
@@ -180,6 +180,7 @@
   
   <script setup>
   import { reactive, ref , watch } from 'vue';
+  import { useRoute } from 'vue-router';
   import dayjs from 'dayjs';
 
   const props = defineProps({
@@ -201,7 +202,7 @@
 
   const gutter = ref([16, 16])
   const loading = ref(false)
-
+  const route = useRoute()
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);

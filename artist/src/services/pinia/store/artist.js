@@ -52,6 +52,30 @@ export const artistStore = defineStore('artist', {
         }
       },
 
+      async getArtistMusics (id, loading) {
+        try {
+            loading.value = true
+            const res = await ArtistEndpoints.getArtistMusics(id)
+            if(res.status === HttpStatusCode.Ok) {   
+                const musics = res.data.data
+                return musics.map((music, index) => {
+                     return {
+                       index: index + 1,
+                       ...music
+                     }
+                })
+        }
+
+            return []
+            
+        } catch (error) {
+            showErrorNotification("error")
+          throw new Error(error)
+        } finally {
+           loading.value = false
+        }
+      },
+
       async getArtistsWithoutPagination () {
         try {
             const res = await ArtistEndpoints.listWithoutPagination()

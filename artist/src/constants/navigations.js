@@ -1,6 +1,6 @@
 import { h } from "vue"
 
-import { UserOutlined , DashboardOutlined, AudioTwoTone, ContactsOutlined } from "@ant-design/icons-vue"
+import { UserOutlined , DashboardOutlined , AudioOutlined, ContactsOutlined } from "@ant-design/icons-vue"
 
 export const sideMenu = [
     {
@@ -21,6 +21,19 @@ export const sideMenu = [
     {
         key: '/musics',
         label: 'Music',
-        icon: () => h(AudioTwoTone)
+        icon: () => h(AudioOutlined)
+    }
+]
+
+export const artistSideMenu = [
+    {
+        key: '/',
+        label: 'Dashboard',
+        icon: () => h(DashboardOutlined)
+    },
+    {
+        key: '/artists/musics',
+        label: 'Music',
+        icon: () => h(AudioOutlined)
     }
 ]

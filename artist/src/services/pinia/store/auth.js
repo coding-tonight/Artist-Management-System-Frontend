@@ -37,18 +37,20 @@ export const authStore = defineStore('auth', {
             loading.value = true
             const res = await AuthEndpoints.signIn({'user': values })
             if(res.status === HttpStatusCode.Ok) {
-                const { token ,email , role  } = res.data
+                const { token ,email , role , artist_id  } = res.data
                 
                 this.token = token
                 this.user = {
                     email,
-                    role
+                    role,
+                    artist_id,
                 }
 
                 localStorage.setItem('access_token', encodeBase64(token.toString()))
                 localStorage.setItem('user', encodeBase64(JSON.stringify({
                     email, 
-                    role
+                    role,
+                    artist_id
                 })))
                 router.push({ name: 'dashboard'})
                 showSuccessNotification("User logged In")

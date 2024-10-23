@@ -14,36 +14,19 @@
 </template>
     
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 import { DashboardLayout } from '@/layouts';
 
-import { userStore } from '@/services/pinia/store/user';
+import { musicStore } from '@/services/pinia/store/music';
 import MusicBaseForm from './MusicBaseForm.vue';
-import { mapDate } from '@/helpers/common';
-import { Form } from 'ant-design-vue';
 
 const loading = ref(false)
-const dataSource  = ref([])
-const meta = ref({})
-const form = Form.useForm()
-
-const store = userStore()
+const store = musicStore()
 
 const onFinish = async values => {  
-    await store.createUser({...values , dob: mapDate(values.dob)}, loading, form)
-  };
-
-const queryData =  async (page = 1) => {
-    const { users, pagination } = await store.getUsers(page, loading)
-    dataSource.value = users
-    meta.value = pagination
-}
-
-onMounted(async() => {
-    await queryData(1, loading)
-})
-    
+    await store.createMusic(values, loading)
+  };    
 </script>
 
 <style></style>

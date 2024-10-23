@@ -44,7 +44,7 @@
             </a-row>
             
             <a-row :gutter="gutter">
-              <a-col :md="4">
+              <a-col :md="8">
                   <a-form-item
                       label="Gender"
                       name="gender"
@@ -53,21 +53,7 @@
                     <a-select v-model:value="formState.gender" placeholder="Gender">
                       <a-select-option value="male">Male</a-select-option>
                       <a-select-option value="female">Female</a-select-option>
-                      <a-select-option value="female">Others</a-select-option>
-                    </a-select>
-                    </a-form-item>
-              </a-col>
-
-                <a-col :md="4">
-                  <a-form-item
-                      label="Genre"
-                      name="genre"
-                      :rules="[{ required: true, message: 'Please input your genre!' }]"
-                    >
-                    <a-select v-model:value="formState.genre" placeholder="Genre">
-                      <a-select-option value="artist">Pop</a-select-option>
-                      <a-select-option value="artist_manager">Rock</a-select-option>
-                      <a-select-option value="super_admin">Country</a-select-option>
+                      <a-select-option value="other">Others</a-select-option>
                     </a-select>
                     </a-form-item>
               </a-col>

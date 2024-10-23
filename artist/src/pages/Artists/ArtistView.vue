@@ -10,7 +10,7 @@
       <section class="flex justify-end mt-2 mb-4">
           <a-breadcrumb>
               <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
-              <a-breadcrumb-item><RouterLink href="/users">Artists</RouterLink></a-breadcrumb-item>
+              <a-breadcrumb-item><RouterLink href="/artists">Artists</RouterLink></a-breadcrumb-item>
           </a-breadcrumb>
       </section>
 
@@ -27,12 +27,21 @@
                     <template #icon><ExportOutlined  /></template>
                     Export
                 </a-button>
+                <RouterLink to="/artists/uploads">
+                    <a-button class="flex items-center ms-2">
+                        <template #icon><ImportOutlined  /></template>
+                        import
+                    </a-button>
+                </RouterLink>
             </div>
 
            <a-table
                :columns="columns"
                :row-key="record => record.id"
                :data-source="dataSource"
+               :scroll="{
+                  x: true
+               }"
                :pagination="{
                    total: !loading ? meta.total_count : 10,
                    onChange: async (page) => {
@@ -45,12 +54,18 @@
                @change="handleTableChange"
                >
                <template #bodyCell="{ column, record }">
-                <template v-if="column.dataIndex === 'action'">
-                    <RouterLink :to="{ path: `/artists/edit/${record.id}` }">
-                        <EditOutlined class="text-green-700 cursor-pointer me-2" />
-                    </RouterLink>
-                      <DeleteOutlined class="text-red-700 cursor-pointer" @click="() => showModal(record.id)" />
-                   </template>
+                    <template v-if="column.dataIndex === 'action'">
+                        <div class="text-nowrap">
+                            <RouterLink :to="{ path: `/artists/${record.id}/musics` }">
+                                <EyeOutlined class="text-green-700 cursor-pointer me-2" />
+                            </RouterLink>
+        
+                            <RouterLink :to="{ path: `/artists/edit/${record.id}` }">
+                                <EditOutlined class="text-green-700 cursor-pointer me-2" />
+                            </RouterLink>
+                            <DeleteOutlined class="text-red-700 cursor-pointer" @click="() => showModal(record.id)" />
+                        </div>
+                    </template>
                </template>
            </a-table>
        </a-card>
@@ -63,7 +78,7 @@ import { onMounted, ref } from 'vue';
 import { DashboardLayout } from '@/layouts';
 import { artistTableHeader as columns } from '@/constants/tableHeaders';
 import { artistStore } from '@/services/pinia/store/artist';
-import { PlusCircleOutlined , DeleteOutlined , EditOutlined, ExportOutlined } from '@ant-design/icons-vue';
+import { PlusCircleOutlined , DeleteOutlined , ImportOutlined, EditOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import { DeleteModal } from '@/components';
 
 

@@ -11,6 +11,8 @@ import {
     CreateUserView,
     EditUserView,
     PermissionDeniedView,
+    ArtistMusicView,
+    UploadCSVArtistView,
 } from "@/pages"
 
 import { auth } from "@/middleware"
@@ -22,7 +24,7 @@ const dashboardRoutes = [
         name: 'home', 
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager', 'artist']
         } 
     },
     { 
@@ -31,7 +33,7 @@ const dashboardRoutes = [
         name: 'dashboard', 
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager', 'artist']
         } 
     },
     { 
@@ -89,6 +91,33 @@ const dashboardRoutes = [
         }  
     },
     { 
+        path: '/artists/:id/musics',
+        component: ArtistMusicView , 
+        name: 'artistMusicId',
+        meta: {
+            middleware: auth,
+            authorize: ['super_admin', 'artist_manager']
+        }  
+    },
+    { 
+        path: '/artists/musics',
+        component: ArtistMusicView , 
+        name: 'artistMusic',
+        meta: {
+            middleware: auth,
+            authorize: ['artist']
+        }  
+    },
+    { 
+        path: '/artists/uploads',
+        component: UploadCSVArtistView , 
+        name: 'artistUploads',
+        meta: {
+            middleware: auth,
+            authorize: ['super_admin']
+        }  
+    },
+    { 
         path: '/musics',
         component: MusicView , 
         name: 'music',
@@ -103,7 +132,7 @@ const dashboardRoutes = [
         name: 'createMusic',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist']
         }  
     },
     { 
@@ -112,7 +141,7 @@ const dashboardRoutes = [
         name: 'editMusic',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist']
         }  
     },
     { 

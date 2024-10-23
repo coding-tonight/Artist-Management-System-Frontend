@@ -7,6 +7,8 @@ export { default as DashboardView } from './Dashboard/DashboardView.vue'
 export { default as ArtistView } from './Artists/ArtistView.vue'
 export { default as CreateArtistView } from './Artists/Form/CreateArtistView.vue'
 export { default as EditArtistView } from './Artists/Form/EditArtistView.vue'
+export { default as ArtistMusicView } from './Artists/ArtistMusicView.vue'
+export { default as UploadCSVArtistView } from './Artists/Form/UploadCSVView.vue'
 
 export { default as MusicView } from './Music/MusicView.vue'
 export { default as CreateMusicView } from './Music/Form/CreateMusicView.vue'

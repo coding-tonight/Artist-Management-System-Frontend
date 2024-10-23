@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-      <Sidebar :collapsed="collapsed" />
+      <Sidebar :collapsed="collapsed" :closed="() => (collapsed = !collapsed)" />
       <a-layout>
         <a-layout-header style="background: #fff; padding: 0;" class="flex items-center justify-between ps-1">
           <a-button  v-if="collapsed"
@@ -26,6 +26,9 @@
         >
           <slot></slot>
         </a-layout-content>
+        <a-footer class="bg-white p-5">
+          <p class="text-gray-600 text-sm">&copy; 2024 AMS. All Rights Reserved.</p>
+        </a-footer>
       </a-layout>
   </a-layout>
 </template>

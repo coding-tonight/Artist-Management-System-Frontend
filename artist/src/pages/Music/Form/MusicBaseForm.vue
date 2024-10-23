@@ -22,6 +22,7 @@
                         placeholder="Select artist" 
                         :filter-option="filterOption"
                         show-search
+                        :disabled="me.role == 'artist'"
                     >
                       <a-select-option 
                       v-for="artist in artists.artists" :value="artist.id" :key="artist.name">{{ artist.name  }}</a-select-option>
@@ -36,7 +37,7 @@
                   name="title"
                   :rules="[{ required: true, message: 'Please input your title!' }]"
                 >
-                  <a-input v-model:value="formState.name" placeholder="Title">
+                  <a-input v-model:value="formState.title" placeholder="Title">
                   </a-input>
                 </a-form-item>
               </a-col>
@@ -47,9 +48,9 @@
                 <a-form-item
                     label="Album Name"
                     name="album_name"
-                    :rules="[{ required: true, message: 'Please input your address!' }]"
+                    :rules="[{ required: true, message: 'Please input  album name!' }]"
                   >
-                    <a-input v-model:value="formState.address" placeholder="address">
+                    <a-input v-model:value="formState.album_name" placeholder="album name">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -66,9 +67,11 @@
                       :rules="[{ required: true, message: 'Please input your genre!' }]"
                     >
                     <a-select v-model:value="formState.genre" placeholder="genre">
-                      <a-select-option value="artist">Pop</a-select-option>
-                      <a-select-option value="artist_manager">Rock</a-select-option>
-                      <a-select-option value="super_admin">Country</a-select-option>
+                      <a-select-option value="jazz">Jazz</a-select-option>
+                      <a-select-option value="rnb">RNB</a-select-option>
+                      <a-select-option value="country">Country</a-select-option>
+                      <a-select-option value="classic">Classic</a-select-option>
+                      <a-select-option value="rock">Rock</a-select-option>
                     </a-select>
                     </a-form-item>
               </a-col>
@@ -100,15 +103,24 @@
     </section>
   </template>
   
-  <script setup>
+<script setup>
   import { artistStore } from '@/services/pinia/store/artist';
-import { reactive, ref , watch } from 'vue';
+  import { authStore } from '@/services/pinia/store/auth';
+import { storeToRefs } from 'pinia';
+  import { reactive, ref , watch } from 'vue';
   import { useRoute } from 'vue-router';
 
   const props = defineProps({
     onFinish: Function,
     data: Object
   })
+  const gutter = ref([16, 16])
+  const loading = ref(false)
+  const route = useRoute()
+  const artists = ref([])
+  const store = artistStore()
+  const auth = authStore()
+  const { me } = storeToRefs(auth)
 
   const formState = reactive({
     title: '',
@@ -117,11 +129,6 @@ import { reactive, ref , watch } from 'vue';
     singer_id: '',
   })
 
-  const gutter = ref([16, 16])
-  const loading = ref(false)
-  const route = useRoute()
-  const artists = ref([])
-  const store = artistStore()
 
 
   const onFinishFailed = errorInfo => {
@@ -137,14 +144,17 @@ import { reactive, ref , watch } from 'vue';
 
   watch(() => {
      formState.title = props.data?.title ?? ''
-     formState.album_name = props.data?.last_name ?? ''
-     formState.genre = props.data?.email ?? ''
-     formState.singer_id = props.data?.phone ?? ''
+     formState.album_name = props.data?.album_name ?? ''
+     formState.genre = props.data?.genre ?? ''
+     formState.singer_id = props.data?.singer_id ?? ''
   })
 
   watch(async () => {
    artists.value =  await store.getArtistsWithoutPagination()
-   console.log(artists.value)
+  })
+
+  watch(() => {
+     formState.singer_id = me.value?.artist_id ?? ''
   })
 
   </script>

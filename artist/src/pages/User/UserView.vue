@@ -28,6 +28,9 @@
                 :columns="columns"
                 :row-key="record => record.id"
                 :data-source="dataSource"
+                :scroll="{
+                    x: true,
+                }"
                 :pagination="{
                     total: !loading ? meta.total_count : 10,
                     onChange: async (page) => {

@@ -1,6 +1,6 @@
 
 <template>
-  <section class="flex w-[100vw]">
+  <section class="flex w-[100vw] h-[100vh]">
     <img src="/logo.png" alt="" height="300" width="100" class="absolute top-2 left-2" />
     <div class="w-[100%] sm:w-[50%] flex items-center">
        <div class="sm:w-[60%] mx-auto">
@@ -58,6 +58,8 @@
               Register
             </RouterLink>
          </a-button>
+
+         <p class="text-gray-600 text-xs text-center mt-6">&copy; 2024 AMS. All Rights Reserved.</p>
        </div>
     </div>
     <div class="login-background w-[50%] hidden sm:block h-[100vh]">

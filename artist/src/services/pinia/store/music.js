@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { HttpStatusCode } from 'axios';
+import router from '@/routers/router';
 
 import { MusicEndpoints } from '@/services/endpoints';
 
@@ -10,17 +11,12 @@ export const musicStore = defineStore('music', {
         musics: null,
     }),
 
-    getters: {
-     
-    },
-
     actions: {
        async getMusics (page = 1, loading) {
         try {
             loading.value = true
             const res = await MusicEndpoints.all(page)
             if(res.status === HttpStatusCode.Ok) {
-                console.log(res.data.data.singers)
                 const { musics } = res.data.data
                 const { pagination  } = res.data.meta
                
@@ -49,6 +45,7 @@ export const musicStore = defineStore('music', {
             loading.value = true
             const res = await MusicEndpoints.create({ 'music': values })
             if(res.status === HttpStatusCode.Ok) {
+                console.log(res.data)
                 showSuccessNotification(res.data.message ?? 'Success')
                 router.push({ name: 'music'})
             }
@@ -60,5 +57,54 @@ export const musicStore = defineStore('music', {
            loading.value = false
         }
       },
+
+      async getMusicDetails (id, loading) {
+        try {
+            loading.value = true
+            const res = await MusicEndpoints.getById(id)
+            if(res.status === HttpStatusCode.Ok) {
+                return res.data.data
+            }
+        } catch(error) {
+            console.log(error.response.data.error)
+            showErrorNotification('error')
+        } finally {
+           loading.value = true
+        }
+      },
+
+      async updateMusic(id, values, loading) { 
+        try {
+            loading.value = true
+            const res = await MusicEndpoints.update(id, {'music': values })
+            if(res.status === HttpStatusCode.Ok) {
+                showSuccessNotification(res.data.message ?? 'Success')
+                router.push({ name: 'music'})
+            }
+            
+        } catch (error) {
+            showErrorNotification("error")
+          throw new Error(error)
+        } finally {
+           loading.value = false
+        }
+      },
+
+
+      async deleteMusic(id, loading) {
+        try {
+            loading.value = true
+            const res = await MusicEndpoints.delete(id)
+            if(res.status === HttpStatusCode.Ok) {
+               showSuccessNotification(res.data.message ?? 'Successfully deleted')
+               return this.getMusics(1, loading)
+            }
+        } catch(error) {
+            console.log(error.response.data.error)
+            showErrorNotification('error')
+        } finally {
+           loading.value = false
+        }
+    },
     },
 })

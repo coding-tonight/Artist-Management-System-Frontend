@@ -1,5 +1,13 @@
 <template>
     <DashboardLayout>
+      <DeleteModal 
+            :open="open"
+            :title="'Delete Confirmation'"
+            :handleOk="handleOk"
+            :handleCancel="handleCancel"
+            :loading="loading"
+       />
+
        <section class="flex justify-end mt-2 mb-4">
            <a-breadcrumb>
                <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
@@ -21,6 +29,9 @@
                 :columns="columns"
                 :row-key="record => record.id"
                 :data-source="dataSource"
+                :scroll="{
+                    x: true
+                }"
                 :pagination="{
                     total: !loading ? meta.total_count : 10,
                     onChange: async (page) => {
@@ -32,8 +43,13 @@
                 :loading="loading"
                 @change="handleTableChange"
                 >
-                <template #bodyCell="{ column, text }">
-                <template v-if="column.dataIndex === 'name'">{{ text.first_name }} {{ text.last_name }}</template>
+                <template #bodyCell="{ column, record }">
+                    <template v-if="column.dataIndex === 'action'">
+                    <RouterLink :to="{ path: `/musics/edit/${record.id}` }">
+                        <EditOutlined class="text-green-700 cursor-pointer me-2" />
+                    </RouterLink>
+                        <DeleteOutlined class="text-red-700 cursor-pointer" @click="() => showModal(record.id)" />
+                    </template>
                 </template>
             </a-table>
         </a-card>
@@ -42,14 +58,20 @@
     
 <script setup>
 import { onMounted, ref } from 'vue';
+import { PlusCircleOutlined , DeleteOutlined , EditOutlined } from '@ant-design/icons-vue';
 
 import { DashboardLayout } from '@/layouts';
 import { musicTableHeader as columns } from '@/constants/tableHeaders';
 import { musicStore  } from '@/services/pinia/store/music';
+import { DeleteModal } from '@/components';
+
+
 
 const loading = ref(false)
 const dataSource  = ref([])
 const meta = ref({})
+const open = ref(false)
+const selectedId = ref(null)
 
 const store = musicStore()
 
@@ -58,6 +80,23 @@ const queryData =  async (page = 1) => {
     const { musics , pagination } = await store.getMusics(page, loading)
     dataSource.value = musics
     meta.value = pagination
+}
+
+const handleOk = async () => {
+    const { musics , pagination } = await store.deleteMusic(selectedId.value, loading)
+    dataSource.value = musics
+    meta.value = pagination
+    open.value = false
+}
+
+const handleCancel = async () => {
+    open.value = false
+    selectedId.value = null
+}
+
+const showModal = (id) => {
+    open.value = true
+    selectedId.value = id
 }
 
 onMounted(async() => {

@@ -35,6 +35,9 @@ export const ArtistEndpoints = {
     },
     import: (file) => {
         return httpClient.post('singers/import', file)
+    },
+    getArtistMusics(id) {
+       return httpClient.get(`singers/${id}/musics`)
     }
 }
 
@@ -69,7 +72,7 @@ export const MusicEndpoints = {
        return httpClient.post('/musics', data)
     },
     update: (id, data) => {
-       return httpClient.post(`/musics/${id}`, data)
+       return httpClient.put(`/musics/${id}`, data)
     },
     delete: (id) => {
         return httpClient.delete(`/musics/${id}`)

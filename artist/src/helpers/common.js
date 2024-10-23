@@ -27,5 +27,15 @@ export const mapDate = (date) => {
   return `${date.$y}-${date.$M}-${date.$D}`
 }
 
+/**
+ * 
+ * @param {*} img 
+ * @param {*} callback 
+ */
+export function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 
 

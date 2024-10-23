@@ -92,7 +92,6 @@ export const musicTableHeader = [
     title: 'S.N',
     dataIndex: 'index',
     sorter: true,
-    width: '10%',
   },
   {
     title: 'Title',
@@ -107,12 +106,36 @@ export const musicTableHeader = [
   {
     title: 'Genre',
     dataIndex: 'genre',
-    width: '20%',
   },
   {
     title: 'Artist',
-    dataIndex: 'artist',
+    dataIndex: 'artist_name',
+  },
+  {
+    title: 'Action',
+    dataIndex: 'action',
+  },
+]
+
+export const artistMusicTableHeader = [
+  {
+    title: 'S.N',
+    dataIndex: 'index',
+    sorter: true,
+  },
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    sorter: true,
+  },
+  {
+    title: 'Album Name',
+    dataIndex: 'album_name',
     width: '20%',
+  },
+  {
+    title: 'Genre',
+    dataIndex: 'genre',
   },
   {
     title: 'Action',
