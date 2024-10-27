@@ -4,22 +4,20 @@ export const userTableHeader = [
       dataIndex: 'index',
       sorter: true,
       width: '10%',
+      sorter: (a, b) => a.index - b.index,
     },
     {
       title: 'Name',
       dataIndex: 'title',
-      sorter: true,
       width: '20%',
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      sorter: true,
     },
     {
       title: 'Dob',
       dataIndex: 'dob',
-      sorter: true,
     },
     {
       title: 'Role',
@@ -49,13 +47,12 @@ export const userTableHeader = [
     {
       title: 'S.N',
       dataIndex: 'index',
-      sorter: true,
+      sorter: (a, b) => a.index - b.index,
       width: '10%',
     },
     {
       title: 'Name',
       dataIndex: 'title',
-      sorter: true,
     },
     {
       title: 'Gender',
@@ -91,12 +88,11 @@ export const musicTableHeader = [
   {
     title: 'S.N',
     dataIndex: 'index',
-    sorter: true,
+    sorter: (a, b) => a.index - b.index,
   },
   {
     title: 'Title',
     dataIndex: 'title',
-    sorter: true,
   },
   {
     title: 'Album Name',
@@ -121,7 +117,7 @@ export const artistMusicTableHeader = [
   {
     title: 'S.N',
     dataIndex: 'index',
-    sorter: true,
+    sorter: (a, b) => a.index - b.index,
   },
   {
     title: 'Title',

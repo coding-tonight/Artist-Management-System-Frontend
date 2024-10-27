@@ -7,6 +7,12 @@
                <a-breadcrumb-item>Edit</a-breadcrumb-item>
            </a-breadcrumb>
        </section>
+
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Update Music"
+        />
+
         <a-card>
           <MusicBaseFrom :onFinish="onFinish" :data="data" />
         </a-card>

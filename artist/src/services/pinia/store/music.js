@@ -5,6 +5,7 @@ import router from '@/routers/router';
 import { MusicEndpoints } from '@/services/endpoints';
 
 import { showErrorNotification, showSuccessNotification } from '@/helpers/notification';
+import { authStore } from './auth';
 
 export const musicStore = defineStore('music', {
     state: () => ({
@@ -22,7 +23,7 @@ export const musicStore = defineStore('music', {
                
                 return { musics: musics.map((music, index) => {
                     return {
-                        index: index + 1,
+                        index: pagination.form + index + 1,
                         ...music
                     }
                 }),
@@ -45,8 +46,12 @@ export const musicStore = defineStore('music', {
             loading.value = true
             const res = await MusicEndpoints.create({ 'music': values })
             if(res.status === HttpStatusCode.Ok) {
-                console.log(res.data)
                 showSuccessNotification(res.data.message ?? 'Success')
+                const auth = authStore()
+                if(auth.me.role == 'artist') {
+                    router.push({ name: 'artistMusic'})
+                    return 
+                }
                 router.push({ name: 'music'})
             }
             
@@ -79,6 +84,11 @@ export const musicStore = defineStore('music', {
             const res = await MusicEndpoints.update(id, {'music': values })
             if(res.status === HttpStatusCode.Ok) {
                 showSuccessNotification(res.data.message ?? 'Success')
+                const auth = authStore()
+                if(auth.me.role == 'artist') {
+                    router.push({ name: 'artistMusic'})
+                    return 
+                }
                 router.push({ name: 'music'})
             }
             

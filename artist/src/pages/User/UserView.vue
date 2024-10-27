@@ -14,6 +14,12 @@
            </a-breadcrumb>
        </section>
 
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Users"
+            :avatar="{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }"
+        />
+
        <a-card>
             <div class="flex justify-start my-2">
                 <RouterLink to="/users/create">
@@ -43,6 +49,30 @@
                 @change="handleTableChange"
                 >
                 <template #bodyCell="{ column, record }">
+                    <template v-if="column.dataIndex === 'title'">
+                        <div class="text-nowrap">{{ record.title }}</div>
+                    </template>
+                    <template v-if="column.dataIndex === 'role'">
+                        <a-tag
+                         v-if="record.role === 'super_admin'"
+                         :color="'green'"
+                        >
+                         SUPER ADMIN
+                        </a-tag>
+                        <a-tag
+                         v-else-if="record.role === 'artist_manager'"
+                         :color="'orange'"
+                        >
+                          ARTIST MANAGER
+                        </a-tag>
+
+                        <a-tag
+                         v-else
+                         :color="'blue'"
+                        >
+                          ARTIST 
+                        </a-tag>
+                    </template>
                    <template v-if="column.dataIndex === 'action'">
                     <RouterLink :to="{ path: `/users/edit/${record.id}` }">
                         <EditOutlined class="text-green-700 cursor-pointer me-2" />

@@ -6,6 +6,7 @@ import { AuthEndpoints } from '@/services/endpoints';
 import { showErrorNotification, showSuccessNotification } from '@/helpers/notification';
 import { decodeBase64, encodeBase64 , mapDate } from '@/helpers/common';
 import router from '@/routers/router';
+import { errorHandler } from '@/helpers/ApiErrorHandler';
 
 export const authStore = defineStore('auth', {
     state: () => ({
@@ -37,13 +38,14 @@ export const authStore = defineStore('auth', {
             loading.value = true
             const res = await AuthEndpoints.signIn({'user': values })
             if(res.status === HttpStatusCode.Ok) {
-                const { token ,email , role , artist_id  } = res.data
+                const { token ,email , role , artist_id ,full_name } = res.data
                 
                 this.token = token
                 this.user = {
                     email,
                     role,
                     artist_id,
+                    full_name,
                 }
 
                 localStorage.setItem('access_token', encodeBase64(token.toString()))
@@ -56,7 +58,7 @@ export const authStore = defineStore('auth', {
                 showSuccessNotification("User logged In")
             }
         } catch (error) {
-            showErrorNotification("error")
+            showErrorNotification(error.response?.data.message)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -69,9 +71,10 @@ export const authStore = defineStore('auth', {
           const res = await AuthEndpoints.signUp({ 'user': {...values, dob: mapDate(values.dob) }})
           if(res.status === HttpStatusCode.Ok) {
             router.replace({ name: 'login' })
-            showSuccessNotification(res.data.message ?? 'Successfully registered')
+            showSuccessNotification(res.data?.message ?? 'Successfully registered')
           }
         } catch (error) {
+           errorHandler(error)
            throw new Error(error)
         } finally {
            loading.value = false

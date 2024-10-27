@@ -7,6 +7,11 @@
                <a-breadcrumb-item>Edit</a-breadcrumb-item>
            </a-breadcrumb>
        </section>
+
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Update Artist"
+        />
         <a-card>
           <ArtistBaseForm :onFinish="onFinish" :data="data" />
         </a-card>

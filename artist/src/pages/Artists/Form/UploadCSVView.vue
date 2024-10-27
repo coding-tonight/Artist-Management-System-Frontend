@@ -11,19 +11,28 @@
 
         <a-card>
            <section>
+               <Spin :spinning="loading">
                 <a-row class="">
-                    <a-col :lg="12" :sm="24">
-                        <a-upload-dragger v-model:file="formState.file" name="files" :beforeUpload="file => console.log(file)">
-                            <p class="ant-upload-drag-icon">
-                                <InboxOutlined />
-                            </p>
-                            <p class="ant-upload-text">Click or drag csv file to this area to upload</p>
-                            <!-- <p class="ant-upload-hint">Support for a single or bulk upload.</p> -->
-                        </a-upload-dragger>
-                    </a-col>       
-                </a-row>
+                      <a-col :md="24" :lg="24" :sm="24">
+                            <a-upload-dragger v-model:file="formState.file" 
+                              name="files"
+                             :customRequest="onFinish" 
+                             :beforeUpload="beforeUpload"
+                             :preview="false"
+                             :progress="percent"
+                             :showUploadList="false"
+                            >
+                                <p class="ant-upload-drag-icon">
+                                    <InboxOutlined />
+                                </p>
+                                <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                                <p class="ant-upload-hint">Support for only cvs file.</p>
+                            </a-upload-dragger>
+                      </a-col>       
+                    </a-row>
+                </Spin>
 
-                <div class="flex justify-end mt-5">
+                <div class="flex justify-end mt-[40px]">
                     <RouterLink to="/artists">
                     <a-button
                         class="ms-2"
@@ -38,27 +47,36 @@
   </template>
   
   <script setup>
-  import { reactive, ref , watch } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { reactive, ref } from 'vue';
+  import { message, Spin } from 'ant-design-vue';
   import { DashboardLayout } from '@/layouts';
+
+  import { artistStore } from '@/services/pinia/store/artist';
 
 
   const formState = reactive({
     file: ''
   })
-
-  console.log(formState)
-
+  
   const loading = ref(false)
-  const route = useRoute()
+  const store = artistStore()
 
-  const onFinish = async values => {  
-    console.log(values)
-    // await store.createMusic(values, loading)
+  const onFinish = async file => {  
+    await store.import(file.file, loading)
   };    
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-  };
+
+  const beforeUpload = (file) => {
+      const isCSV = file.type === 'text/csv'
+
+      if (!isCSV) {
+        message.error('You can only upload JPG file!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('File size must smaller than 2MB!');
+      }
+      return isCSV && isLt2M;
+    };
 
   </script>
 

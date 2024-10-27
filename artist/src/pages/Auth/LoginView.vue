@@ -16,6 +16,7 @@
            <a-form-item
              label="Email"
              name="email"
+             has-feedback
              :rules="[{ required: true, message: 'Please input your email!' }]"
            >
              <a-input v-model:value="formState.email" placeholder="example@gmail.com">
@@ -28,6 +29,7 @@
            <a-form-item
              label="Password"
              name="password"
+             has-feedback
              :rules="[{ required: true, message: 'Please input your password!' }]"
            >
              <a-input-password v-model:value="formState.password" placeholder="password">
@@ -53,11 +55,11 @@
 
          <a-divider> or sign up</a-divider>
 
-         <a-button block>
-            <RouterLink to="/register">
+         <RouterLink to="/register">
+            <a-button block>
               Register
-            </RouterLink>
-         </a-button>
+            </a-button>
+          </RouterLink>
 
          <p class="text-gray-600 text-xs text-center mt-6">&copy; 2024 AMS. All Rights Reserved.</p>
        </div>

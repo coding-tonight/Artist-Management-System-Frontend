@@ -2,7 +2,7 @@
   <a-layout>
       <Sidebar :collapsed="collapsed" :closed="() => (collapsed = !collapsed)" />
       <a-layout>
-        <a-layout-header style="background: #fff; padding: 0;" class="flex items-center justify-between ps-1">
+        <a-layout-header style="background: #fff; padding: 0;" class="flex items-center justify-between px-1">
           <a-button  v-if="collapsed"
               class="trigger border-none shadow-none"
               @click="() => (collapsed = !collapsed)">
@@ -12,10 +12,30 @@
           <a-button v-else class="trigger border-none shadow-none" @click="() => (collapsed = !collapsed)">
             <MenuUnfoldOutlined  />
           </a-button>
-          
-            <a-button class="border-none shadow-none" @click="user.logOut()">
-              <LoginOutlined  />
-            </a-button>
+          <a-dropdown :trigger="['click']" :placement="'bottomLeft'" class="cursor-pointer">
+            <a-avatar 
+              size="large" 
+              :style="{ 
+                 backgroundColor: 'green', 
+                 verticalAlign: 'middle'
+                 }"
+                >
+               {{ user.me?.full_name?.at(0).toUpperCase() ?? user.me?.email?.at(0).toUpperCase() }}
+            </a-avatar>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item key="0" class="text-nowrap">
+                <span class="text-slate-800">
+                  {{  user.me?.full_name ?? user.me.email }}
+                </span>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item key="1" @click="user.logOut()" class="text-nowrap">
+                <LoginOutlined  /> Logout
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
         </a-layout-header>
 
         <a-layout-content
@@ -26,9 +46,9 @@
         >
           <slot></slot>
         </a-layout-content>
-        <a-footer class="bg-white p-5">
+        <footer class="bg-white p-5">
           <p class="text-gray-600 text-sm">&copy; 2024 AMS. All Rights Reserved.</p>
-        </a-footer>
+        </footer>
       </a-layout>
   </a-layout>
 </template>

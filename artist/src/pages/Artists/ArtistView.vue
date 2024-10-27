@@ -14,21 +14,30 @@
           </a-breadcrumb>
       </section>
 
+      <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Artists"
+            :avatar="{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }"
+        />
+
        <a-card>
-           <div class="flex justify-start my-2">
+           <div class="flex flex-col sm:flex-row justify-start my-2 flex-wrap gap-2">
                 <RouterLink to="/artists/create">
-                    <a-button class="flex items-center">
+                    <a-button class="flex items-center justify-center" block>
                        <template #icon><PlusCircleOutlined /></template>
-                      Create
+                       <span class="hidden sm:block">
+                          Create
+                       </span>
                    </a-button>
                 </RouterLink>
 
-                <a-button class="flex items-center ms-2" @click="async () =>  await store.export()">
+                <a-button class="flex items-center justify-center" @click="async () =>  await store.export()">
                     <template #icon><ExportOutlined  /></template>
                     Export
                 </a-button>
+
                 <RouterLink to="/artists/uploads">
-                    <a-button class="flex items-center ms-2">
+                    <a-button class="flex items-center justify-center" block>
                         <template #icon><ImportOutlined  /></template>
                         import
                     </a-button>
@@ -54,10 +63,14 @@
                @change="handleTableChange"
                >
                <template #bodyCell="{ column, record }">
+                    <template v-if="column.dataIndex === 'title'">
+                        <div class="text-nowrap">{{ record.title }}</div>
+                    </template>
+                    
                     <template v-if="column.dataIndex === 'action'">
                         <div class="text-nowrap">
                             <RouterLink :to="{ path: `/artists/${record.id}/musics` }">
-                                <EyeOutlined class="text-green-700 cursor-pointer me-2" />
+                                <EyeOutlined class="text-blue-700 cursor-pointer me-2" />
                             </RouterLink>
         
                             <RouterLink :to="{ path: `/artists/edit/${record.id}` }">

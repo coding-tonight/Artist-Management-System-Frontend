@@ -14,7 +14,14 @@
                <a-breadcrumb-item>Music</a-breadcrumb-item>
            </a-breadcrumb>
        </section>
- 
+
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Musics"
+             :avatar="{ src: '/album.jpg' }"
+             :sub-title="artist?.name ?? 'artist'"
+        />
+
         <a-card>
             <div v-if="auth.me.role == 'artist'" class="flex justify-start my-2">
                 <RouterLink to="/musics/create">
@@ -24,6 +31,7 @@
                    </a-button>
                 </RouterLink>
             </div>
+
 
             <a-table
                 :columns="columns"
@@ -53,7 +61,7 @@
  </template>
     
  <script setup>
- import { onMounted, ref } from 'vue';
+ import { onMounted, ref, watch  } from 'vue';
  import { useRoute } from 'vue-router';
 
  import { DashboardLayout } from '@/layouts';
@@ -67,9 +75,11 @@ import { storeToRefs } from 'pinia';
  
  
  const loading = ref(false)
+ const artistLoading = ref(false)
  const dataSource  = ref([])
  const open = ref(false)
  const selectedId = ref(null)
+ const artist = ref({})
  
  const store = artistStore()
  const musicApi = musicStore()
@@ -102,6 +112,10 @@ import { storeToRefs } from 'pinia';
  
  onMounted(async() => {
     await queryData()
+ })
+
+ watch(async () => {
+    artist.value =  await store.getArtistDetails(route.params?.id ?? me.value?.artist_id, artistLoading)
  })
     
  </script>

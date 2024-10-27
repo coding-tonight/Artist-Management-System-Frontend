@@ -7,6 +7,12 @@
                <a-breadcrumb-item>Create</a-breadcrumb-item>
            </a-breadcrumb>
        </section>
+
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Create Music"
+        />
+
         <a-card>
           <MusicBaseForm :onFinish="onFinish" />
         </a-card>

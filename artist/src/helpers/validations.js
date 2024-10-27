@@ -1,35 +1,40 @@
-const validatePass = async (_rule, value) => {
-    if (value === '') {
-      return Promise.reject('Please input the password');
-    } else {
-      if (formState.password !== '') {
-        formRef.value.validateFields('password');
-      }
-      return Promise.resolve();
-    }
-  };
-  const validatePass2 = async (_rule, value) => {
-    if (value === '') {
-      return Promise.reject('Please input the password again');
-    } else if (value !== formState.password) {
-      return Promise.reject("Two inputs don't match!");
-    } else {
-      return Promise.resolve();
-    }
-  };
+import { mapDate } from "./common";
 
-export const registerValidation = {
-    password: [
-        {
-          required: true,
-          validator: validatePass,
-          trigger: 'change',
-        },
-      ],
-      confirmation_password: [
-        {
-          validator: validatePass2,
-          trigger: 'change',
-        },
-      ],
+export const dateOfBirthValidation = async (_rule, value) => {
+    if(value === '' || value === null) {
+      return Promise.reject('Please enter your dob!')
+    }
+
+    const currentDate = new Date();
+    const userDate = new Date(mapDate(value));
+    const currentYear = currentDate.getFullYear()
+
+    const inputYear = userDate.getFullYear()
+    const minAge = 16
+
+   // Check if userDate is a valid date and is not in the future
+    if (inputYear > currentYear) {
+        return Promise.reject("Dob can not in the future!");
+    }
+
+
+    if((currentYear - inputYear) < minAge) {
+      return Promise.reject("Minimum age must be 16 or above.")
+    }
+
+    return Promise.resolve();
+};
+
+export const phoneValidation  = async (_rule, value) => {
+   if(value === "") {
+      return Promise.reject("Please enter your phone number!")
+   }
+
+   if (isNaN(value)) {
+      return Promise.reject("Phone must be number")
+   }
+
+   return Promise.resolve()
 }
+
+

@@ -5,6 +5,7 @@ import { UserEndpoints } from '@/services/endpoints';
 import router from '@/routers/router';
 
 import { showErrorNotification, showSuccessNotification } from '@/helpers/notification';
+import { errorHandler } from '@/helpers/ApiErrorHandler';
 
 export const userStore = defineStore('user', {
     state: () => ({
@@ -22,7 +23,7 @@ export const userStore = defineStore('user', {
                
                 return { users: users.map((user, index) => {
                     return {
-                        index: index + 1,
+                        index: pagination.form + index + 1,
                         key: user.id,
                         title: `${user.first_name} ${user.last_name}`,
                         ...user
@@ -35,7 +36,7 @@ export const userStore = defineStore('user', {
             return []
             
         } catch (error) {
-            showErrorNotification("error")
+            showErrorNotification("Ops something went wrong!")
           throw new Error(error)
         } finally {
            loading.value = false
@@ -52,7 +53,7 @@ export const userStore = defineStore('user', {
             }
             
         } catch (error) {
-            showErrorNotification("error")
+          errorHandler(error)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -67,8 +68,8 @@ export const userStore = defineStore('user', {
                 return res.data
             }
         } catch(error) {
-            console.log(error.response.data.error)
-            showErrorNotification('error')
+            errorHandler(error)
+            throw new Error(error)
         } finally {
            loading.value = true
         }
@@ -85,8 +86,8 @@ export const userStore = defineStore('user', {
             }
             
         } catch (error) {
-            showErrorNotification("error")
-          throw new Error(error)
+            errorHandler(error)
+            throw new Error(error)
         } finally {
            loading.value = false
         }

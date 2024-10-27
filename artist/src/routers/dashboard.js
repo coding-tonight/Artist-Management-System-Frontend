@@ -69,7 +69,7 @@ const dashboardRoutes = [
         name: 'artist',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager']
         }  
     },
     { 
@@ -78,7 +78,7 @@ const dashboardRoutes = [
         name: 'createArtist',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager']
         }  
     },
     { 
@@ -87,7 +87,7 @@ const dashboardRoutes = [
         name: 'editArtist',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager']
         }  
     },
     { 
@@ -114,7 +114,7 @@ const dashboardRoutes = [
         name: 'artistUploads',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager']
         }  
     },
     { 
@@ -123,7 +123,7 @@ const dashboardRoutes = [
         name: 'music',
         meta: {
             middleware: auth,
-            authorize: ['super_admin']
+            authorize: ['super_admin', 'artist_manager']
         }  
     },
     { 

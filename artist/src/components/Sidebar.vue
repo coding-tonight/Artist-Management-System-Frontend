@@ -4,15 +4,30 @@
     v-if="isSmallScreen"
     :placement="'left'"
     :closable="true"
-    :visible="collapsed"
+    :open="collapsed"
     @close="prop.closed"
      class="w-[100%]"
   >
-     <a-menu 
-        class="w-[100%]"
-        v-model:selectedKeys="selectedKeys" 
-        :items="auth.me?.role !== 'artist' ? sideMenu: artistSideMenu" @click="(item) => navigate(item)"
-       />
+  <a-menu 
+      class="w-[100%]"
+      v-model:selectedKeys="selectedKeys"
+      v-if="auth.me?.role == 'artist'" 
+      :items="artistSideMenu" @click="(item) => navigate(item)"
+    />
+
+  <a-menu 
+     class="w-[100%]"
+     v-model:selectedKeys="selectedKeys" 
+     v-else-if="auth.me?.role == 'artist_manager'"
+     :items="artistManagerMenu" @click="(item) => navigate(item)"
+    />
+
+    <a-menu 
+     class="w-[100%]"
+     v-model:selectedKeys="selectedKeys" 
+     v-else
+     :items="sideMenu" @click="(item) => navigate(item)"
+    />
   </a-drawer>
 
   <a-layout-sider 
@@ -29,10 +44,27 @@
         height="300" 
         :width="collapsed ? 50: 100"
       >
+
+       <a-menu 
+        class="w-[100%]"
+        v-model:selectedKeys="selectedKeys"
+        v-if="auth.me?.role == 'artist'" 
+        :items="artistSideMenu" @click="(item) => navigate(item)"
+      />
+
       <a-menu 
+        class="w-[100%]"
         v-model:selectedKeys="selectedKeys" 
-        :items="auth.me?.role !== 'artist' ? sideMenu: artistSideMenu" @click="(item) => navigate(item)"
-       />
+        v-else-if="auth.me?.role == 'artist_manager'"
+        :items="artistManagerMenu" @click="(item) => navigate(item)"
+        />
+
+      <a-menu 
+        class="w-[100%]"
+        v-model:selectedKeys="selectedKeys" 
+        v-else
+        :items="sideMenu" @click="(item) => navigate(item)"
+      />
     </a-layout-sider>
 </template>
 
@@ -41,7 +73,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { authStore } from '@/services/pinia/store/auth';
-import { sideMenu , artistSideMenu } from '@/constants/navigations';
+import { sideMenu , artistSideMenu, artistManagerMenu } from '@/constants/navigations';
 import { useMediaQuery } from '@vueuse/core'
 
 const prop = defineProps({
@@ -49,8 +81,17 @@ const prop = defineProps({
   closed: Function,
 })
 
+const currentPath = () => {
+  const pathname = window.location.pathname
+   if(pathname.startsWith('/musics')) return '/musics'
+   else if (pathname === '/artists/musics') return pathname
+   else if (pathname.startsWith('/artists')) return '/artists'
+   else if (pathname.startsWith('/users')) return '/users'
+   else return pathname
+}
+
 const auth = authStore()
-const selectedKeys = ref([window.location.pathname])
+const selectedKeys = ref([currentPath()])
 const router = useRouter()
 const isSmallScreen = useMediaQuery('(max-width: 600px)')
 

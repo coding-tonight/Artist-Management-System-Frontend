@@ -1,6 +1,6 @@
 
 <template>
-    <section class="w-[80%]">
+    <section class="sm:w-[80%]">
       <div class="">
          <div class="">
            <a-form
@@ -25,7 +25,7 @@
                   </a-input>
                 </a-form-item>
               </a-col>
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                   label="Last Name"
                   name="last_name"
@@ -41,7 +41,7 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                     label="Email"
                     name="email"
@@ -54,13 +54,16 @@
                     </a-input>
                   </a-form-item>
               </a-col>
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                     label="Phone"
                     name="phone"
-                    :rules="[{ required: true, message: 'Please input your phone!' }]"
+                    :rules="[{ 
+                      required: true, 
+                      validator: phoneValidation,
+                    }]"
                   >
-                    <a-input v-model:value="formState.phone" placeholder="98XXXXXXXX">
+                    <a-input v-model:value="formState.phone" placeholder="98XXXXXXXX" maxLength="10">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -70,13 +73,13 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                     label="Address"
                     name="address"
                     :rules="[{ required: true, message: 'Please input your address!' }]"
                   >
-                    <a-input v-model:value="formState.address" placeholder="address">
+                    <a-input v-model:value="formState.address" placeholder="Address">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -84,7 +87,7 @@
                   </a-form-item>
               </a-col>
 
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                     label="Role"
                     name="role"
@@ -100,13 +103,17 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
-                <a-form-item label="Dob" name="dob">
+              <a-col :xs="24" :sm="24" :md="12">
+                <a-form-item 
+                  label="Dob" 
+                  name="dob"
+                  :rules="[{ required: true, validator: dateOfBirthValidation }]"
+                >
                   <a-date-picker class="w-[100%]" v-model:value="formState.dob" />
                 </a-form-item>
               </a-col>
 
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                     label="Gender"
                     name="gender"
@@ -115,18 +122,18 @@
                   <a-select v-model:value="formState.gender" placeholder="Gender">
                     <a-select-option value="male">Male</a-select-option>
                     <a-select-option value="female">Female</a-select-option>
-                    <a-select-option value="female">Others</a-select-option>
+                    <a-select-option value="other">Others</a-select-option>
                   </a-select>
                   </a-form-item>
               </a-col>
             </a-row>
             
-            <a-row :gutter="gutter">
-              <a-col :md="12">
+            <a-row :gutter="gutter" v-if="!data">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                label="Password"
                name="password"
-               :rules="[{ required: true, message: 'Please input your password!' }]"
+               :rules="[{ required: true, min: 6, message: 'Please input your password!' }]"
              >
                <a-input-password v-model:value="formState.password" placeholder="password">
                  <template #prefix>
@@ -136,13 +143,13 @@
              </a-form-item>
               </a-col>
 
-              <a-col :md="12">
+              <a-col :xs="24" :sm="24" :md="12">
                 <a-form-item
                   label="Confirm Password"
-                  name="confirmation_password"
+                  name="password_confirmation"
                   :rules="[{ required: true,  validator: confirmPasswordValidator , trigger: 'change'}]"
                 >
-                  <a-input-password v-model:value="formState.confirmation_password" placeholder="password">
+                  <a-input-password v-model:value="formState.password_confirmation" placeholder="password">
                     <template #prefix>
                       <LockOutlined class="site-form-item-icon" />
                     </template>
@@ -183,6 +190,8 @@
   import { useRoute } from 'vue-router';
   import dayjs from 'dayjs';
 
+  import { phoneValidation, dateOfBirthValidation } from '@/helpers/validations';
+
   const props = defineProps({
     onFinish: Function,
     data: Object
@@ -197,7 +206,7 @@
     dob: '',
     role:'',
     password: '',
-    confirmation_password: ''
+    password_confirmation: ''
   })
 
   const gutter = ref([16, 16])
@@ -207,6 +216,24 @@
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
+
+  const passwordValidator = async (_rule, value) => {
+     if(value = '') {
+       return Promise.reject("Please input the password")
+     }
+
+     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!^%*?&]{8,15}$/
+
+     if(!regex.test(value)) {
+        return Promise.reject("Password is weak")
+     }
+
+     if (value.length < 6) {
+        return Promise.reject("Password must minimum of 6 characters")
+     } else {
+      return Promise.resolve()
+     }
+  }
 
   const confirmPasswordValidator = async (_rule, value) => {
     if (value === '') {

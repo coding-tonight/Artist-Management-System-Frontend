@@ -25,6 +25,24 @@ export const sideMenu = [
     }
 ]
 
+export const artistManagerMenu = [
+    {
+        key: '/',
+        label: 'Dashboard',
+        icon: () => h(DashboardOutlined)
+    },
+    {
+        key: '/artists',
+        label: 'Artists',
+        icon: () => h(ContactsOutlined)
+    },
+    {
+        key: '/musics',
+        label: 'Music',
+        icon: () => h(AudioOutlined)
+    }
+]
+
 export const artistSideMenu = [
     {
         key: '/',

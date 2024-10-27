@@ -1,8 +1,9 @@
 
 <template>
     <section class="flex w-[100vw]">
-      <div class="w-[50%] flex items-center">
-         <div class="w-[60%] mx-auto">
+      <img src="/logo.png" alt="logo" height="300" width="100" class="absolute top-2 left-2" />
+      <div class="w-[100%] sm:w-[50%] flex items-center mt-[60px] sm:mt-[0px]">
+         <div class="w-[80%] sm:w-[60%] mx-auto">
            <!-- <img src="/logo.png" alt="" height="100" /> -->
            <h1 class="mb-5 text-center text-xl">Register Account</h1>
            <a-form
@@ -14,26 +15,26 @@
              @finishFailed="onFinishFailed"
            >
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                   label="First Name"
                   name="first_name"
                   :rules="[{ required: true, message: 'Please input your email!' }]"
                 >
-                  <a-input v-model:value="formState.first_name" placeholder="example@gmail.com">
+                  <a-input v-model:value="formState.first_name" placeholder="First Name">
                     <template #prefix>
                       <UserOutlined class="site-form-item-icon" />
                     </template>
                   </a-input>
                 </a-form-item>
               </a-col>
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                   label="Last Name"
                   name="last_name"
-                  :rules="[{ required: true, message: 'Please input your email!' }]"
+                  :rules="[{ required: true, message: 'Please input your last name!' }]"
                 >
-                  <a-input v-model:value="formState.last_name" placeholder="example@gmail.com">
+                  <a-input v-model:value="formState.last_name" placeholder="Last Name">
                     <template #prefix>
                       <UserOutlined class="site-form-item-icon" />
                     </template>
@@ -43,7 +44,7 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                     label="Email"
                     name="email"
@@ -56,13 +57,13 @@
                     </a-input>
                   </a-form-item>
               </a-col>
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                     label="Phone"
                     name="phone"
-                    :rules="[{ required: true, message: 'Please input your email!' }]"
+                    :rules="[{ required: true, validator: phoneValidation }]"
                   >
-                    <a-input v-model:value="formState.phone" placeholder="example@gmail.com">
+                    <a-input v-model:value="formState.phone" placeholder="98XXXXXXXX" maxLength="10">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -72,13 +73,13 @@
             </a-row>
 
             <a-row>
-              <a-col :md="24">
+              <a-col :xs="24" :md="24">
                 <a-form-item
                     label="Address"
                     name="address"
                     :rules="[{ required: true, message: 'Please input your email!' }]"
                   >
-                    <a-input v-model:value="formState.address" placeholder="example@gmail.com">
+                    <a-input v-model:value="formState.address" placeholder="Address">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -88,13 +89,16 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
-                <a-form-item label="Dob" name="dob">
+              <a-col :xs="24" :md="12">
+                <a-form-item 
+                   label="Dob" 
+                   name="dob" 
+                  :rules="[{ required: true, validator: dateOfBirthValidation }]">
                   <a-date-picker class="w-[100%]" v-model:value="formState.dob" />
                 </a-form-item>
               </a-col>
 
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                     label="Gender"
                     name="gender"
@@ -110,7 +114,7 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                label="Password"
                name="password"
@@ -123,13 +127,15 @@
                </a-input-password>
              </a-form-item>
               </a-col>
-              <a-col :md="12">
+              <a-col :xs="24" :md="12">
                 <a-form-item
                   label="Confirm Password"
                   name="confirmation_password"
                   :rules="[{ required: true,  validator: confirmPasswordValidator , trigger: 'change'}]"
                 >
-                  <a-input-password v-model:value="formState.confirmation_password" placeholder="password">
+                  <a-input-password 
+                    v-model:value="formState.confirmation_password" 
+                    placeholder="Confirmation Password">
                     <template #prefix>
                       <LockOutlined class="site-form-item-icon" />
                     </template>
@@ -153,7 +159,7 @@
            </a-form>
          </div>
       </div>
-      <div class="register-background w-[50%] h-[100vh]">
+      <div class="register-background w-[50%] h-[100vh] hidden sm:block">
       </div>
     </section>
   </template>
@@ -162,6 +168,7 @@
   import { reactive, ref } from 'vue';
 
   import { authStore } from '@/services/pinia/store/auth';
+  import { phoneValidation, dateOfBirthValidation } from '@/helpers/validations';
   
   const formState = reactive({
     first_name: '',

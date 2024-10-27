@@ -1,11 +1,12 @@
 import { httpClient } from "../request"
+import axios from "axios"
 
 export const AuthEndpoints = {
     signIn: (data) => {
-        return httpClient.post('tokens', data)
+        return axios.post(`${import.meta.env.VITE_BASE_API_URL}tokens`, data)
     },
     signUp: (data) => {
-        return httpClient.post('/users', data)
+        return axios.post(`${import.meta.env.VITE_BASE_API_URL}/users`, data)
     }
 }
 
@@ -34,7 +35,11 @@ export const ArtistEndpoints = {
         })
     },
     import: (file) => {
-        return httpClient.post('singers/import', file)
+        return httpClient.post('singers/import', file, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+             },
+        })
     },
     getArtistMusics(id) {
        return httpClient.get(`singers/${id}/musics`)
@@ -50,7 +55,7 @@ export const UserEndpoints = {
        return httpClient.get(`/users/${id}`)
     },
     create: (data) => {
-       return httpClient.post('/users', data)
+       return httpClient.post('/users/admin', data)
     },
     update: (id, data) => {
        return httpClient.patch(`/users/${id}`, data)
@@ -76,5 +81,11 @@ export const MusicEndpoints = {
     },
     delete: (id) => {
         return httpClient.delete(`/musics/${id}`)
+    }
+}
+
+export const ReportEndpoints = {
+    musicsCountByGenre: () => {
+        return httpClient.get('/reports')
     }
 }

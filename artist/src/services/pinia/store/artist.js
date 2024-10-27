@@ -5,6 +5,8 @@ import { ArtistEndpoints } from '@/services/endpoints';
 
 import { showErrorNotification, showSuccessNotification } from '@/helpers/notification';
 import router from '@/routers/router';
+import { errorHandler } from '@/helpers/ApiErrorHandler';
+import { message } from 'ant-design-vue';
 
 export const artistStore = defineStore('artist', {
     state: () => ({
@@ -30,7 +32,7 @@ export const artistStore = defineStore('artist', {
                
                 const data = { artists: singers.map((singer, index) => {
                     return {
-                        index: index + 1,
+                        index: pagination.form + index + 1,
                         title: singer.name.toString(),
                         ...singer
                     }
@@ -45,7 +47,7 @@ export const artistStore = defineStore('artist', {
             return []
             
         } catch (error) {
-            showErrorNotification("error")
+            errorHandler(error)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -69,7 +71,7 @@ export const artistStore = defineStore('artist', {
             return []
             
         } catch (error) {
-            showErrorNotification("error")
+            errorHandler(error)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -80,7 +82,6 @@ export const artistStore = defineStore('artist', {
         try {
             const res = await ArtistEndpoints.listWithoutPagination()
             if(res.status === HttpStatusCode.Ok) {
-                console.log(res.data.data.singers)
                 const { singers } = res.data.data
                 const data = { artists: singers.map((singer, index) => {
                     return {
@@ -97,7 +98,7 @@ export const artistStore = defineStore('artist', {
             return []
             
         } catch (error) {
-            showErrorNotification("error")
+            errorHandler(error)
           throw new Error(error)
         } finally {
            this.isLoading = false
@@ -114,7 +115,7 @@ export const artistStore = defineStore('artist', {
             }
             
         } catch (error) {
-            showErrorNotification("error")
+           errorHandler(error)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -129,8 +130,7 @@ export const artistStore = defineStore('artist', {
                 return res.data.data
             }
         } catch(error) {
-            console.log(error.response.data.error)
-            showErrorNotification('error')
+            errorHandler(error)
         } finally {
            loading.value = true
         }
@@ -146,7 +146,7 @@ export const artistStore = defineStore('artist', {
             }
             
         } catch (error) {
-            showErrorNotification("error")
+            errorHandler(error)
           throw new Error(error)
         } finally {
            loading.value = false
@@ -163,8 +163,7 @@ export const artistStore = defineStore('artist', {
                return this.getArtists(1, loading)
             }
         } catch(error) {
-            console.log(error.response.data.error)
-            showErrorNotification('error')
+            errorHandler(error)
         } finally {
            loading.value = false
         }
@@ -173,11 +172,12 @@ export const artistStore = defineStore('artist', {
     async export() {
         try {
             this.isLoading = true
+            message.loading("loading...")
             const res = await ArtistEndpoints.export()
             if(res.status === HttpStatusCode.Ok) {
                showSuccessNotification(res.data.message ?? 'Successfully Exported CSV')
+               message.success("hello")
                const url = window.URL.createObjectURL(new Blob([res.data]))
-
                // Create an anchor element to trigger the download
                 const link = document.createElement('a')
                 link.href = url
@@ -187,10 +187,24 @@ export const artistStore = defineStore('artist', {
                 link.remove() // Clean up
             }
         } catch(error) {
-            console.log(error.response.data.error)
-            showErrorNotification('error')
+            errorHandler(error)
         } finally {
           this.isLoading = false
+          message.destroy()
+        }
+    },
+    async import(file, loading) {
+        try {
+            loading.value = true
+            const res = await ArtistEndpoints.import({ "file":file })
+            if(res.status === HttpStatusCode.Ok) {
+               showSuccessNotification(res.data.message ?? 'Successfully Exported CSV')
+               router.push({ name: 'artist'})
+            }
+        } catch(error) {
+            errorHandler(error)
+        } finally {
+          loading.value = false
         }
     }
 },

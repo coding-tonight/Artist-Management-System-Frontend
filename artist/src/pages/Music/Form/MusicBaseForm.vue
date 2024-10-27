@@ -1,5 +1,5 @@
 <template>
-    <section class="w-[80%]">
+    <section class="sm:w-[80%]">
       <div class="">
          <div class="">
           <a-form
@@ -44,7 +44,7 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="8">
+              <a-col :lg="8" :md="6" :sm="24" :xs="24">
                 <a-form-item
                     label="Album Name"
                     name="album_name"
@@ -60,7 +60,7 @@
             </a-row>
             
             <a-row :gutter="gutter">
-              <a-col :md="8">
+              <a-col :lg="8" :md="6" :sm="24" :xs="24">
                   <a-form-item
                       label="Genre"
                       name="genre"
@@ -88,7 +88,7 @@
                    >
                     {{ route.params && route.params.id ? 'Update': 'Create'}}
                   </a-button>
-                  <RouterLink to="/musics">
+                  <RouterLink :to="auth.me.role === 'artist' ? '/artists/musics': '/musics'">
                     <a-button
                       class="ms-2"
                      >

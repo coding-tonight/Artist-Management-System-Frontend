@@ -15,6 +15,12 @@
            </a-breadcrumb>
        </section>
 
+       <a-page-header
+            style="border: 1px solid rgb(235, 237, 240)"
+            title="Musics"
+             :avatar="{ src: '/album.jpg' }"
+        />
+
         <a-card>
             <div class="flex justify-start my-2">
                 <RouterLink to="/musics/create">

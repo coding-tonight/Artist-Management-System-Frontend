@@ -28,13 +28,13 @@
             </a-row>
 
             <a-row :gutter="gutter">
-              <a-col :md="8">
+              <a-col :lg="8" :md="12" :sm="24" :xs="24">
                 <a-form-item
                     label="Address"
                     name="address"
                     :rules="[{ required: true, message: 'Please input your address!' }]"
                   >
-                    <a-input v-model:value="formState.address" placeholder="address">
+                    <a-input v-model:value="formState.address" placeholder="Address">
                       <template #prefix>
                         <UserOutlined class="site-form-item-icon" />
                       </template>
@@ -44,7 +44,7 @@
             </a-row>
             
             <a-row :gutter="gutter">
-              <a-col :md="8">
+              <a-col :lg="8" :md="12" :sm="24" :xs="24">
                   <a-form-item
                       label="Gender"
                       name="gender"
@@ -61,15 +61,19 @@
 
 
             <a-row :gutter="gutter">
-              <a-col :lg="8" :md="6" :sm="24" :xs="24">
-                <a-form-item label="Dob" name="dob">
+              <a-col :lg="8" :md="12" :sm="24" :xs="24">
+                <a-form-item 
+                  label="Dob" 
+                  name="dob"
+                  :rules="[{ required: true, validator: dateOfBirthValidation }]"
+                >
                   <a-date-picker class="w-[100%]" v-model:value="formState.dob" />
                 </a-form-item>
               </a-col>
             </a-row>
             
             <a-row :gutter="gutter">
-              <a-col :lg="4" :md="6" :sm="24" :xs="24">
+              <a-col :lg="8" :md="12" :sm="24" :xs="24">
                 <a-form-item
                 label="First Release Year"
                 name="first_release_year"
@@ -78,19 +82,21 @@
                 <a-date-picker class="w-[100%]" v-model:value="formState.first_release_year" />
               </a-form-item>
               </a-col>
-
-              <a-col :lg="4" :md="6" :sm="24" :xs="24">
+            </a-row>
+            
+            <a-row>
+              <a-col :lg="8" :md="12" :sm="24" :xs="24">
                 <a-form-item
                   label="No of albums released"
                   name="no_of_albums_released"
                   :rules="[{ required: true,  message: 'Please enter the no of albums released'}]"
                 >
-                 <a-input v-model:value="formState.no_of_albums_released" placeholder="address">
+                 <a-input v-model:value="formState.no_of_albums_released" placeholder="No of album released">
                  </a-input>
                 </a-form-item>
               </a-col>
             </a-row>
-              
+            
 
             <div class="flex justify-start">
                 <a-form-item>
@@ -122,6 +128,8 @@
   import { reactive, ref , watch } from 'vue';
   import { useRoute } from 'vue-router';
   import dayjs from 'dayjs';
+
+  import { dateOfBirthValidation } from '@/helpers/validations';
 
   const props = defineProps({
     onFinish: Function,
