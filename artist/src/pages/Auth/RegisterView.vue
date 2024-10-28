@@ -157,6 +157,14 @@
                </a-button>
              </a-form-item>
            </a-form>
+
+           <a-divider> or sign in</a-divider>
+
+         <RouterLink to="/Login">
+            <a-button block>
+              Already has an account?
+            </a-button>
+          </RouterLink>
          </div>
       </div>
       <div class="register-background w-[50%] h-[100vh] hidden sm:block">

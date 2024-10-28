@@ -52,7 +52,8 @@ export const authStore = defineStore('auth', {
                 localStorage.setItem('user', encodeBase64(JSON.stringify({
                     email, 
                     role,
-                    artist_id
+                    artist_id,
+                    full_name,
                 })))
                 router.push({ name: 'dashboard'})
                 showSuccessNotification("User logged In")

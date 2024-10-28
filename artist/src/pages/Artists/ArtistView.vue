@@ -66,11 +66,17 @@
                     <template v-if="column.dataIndex === 'title'">
                         <div class="text-nowrap">{{ record.title }}</div>
                     </template>
+
+                    <template v-if="column.dataIndex === 'address'">
+                        <div class="text-nowrap">{{ record.address }}</div>
+                    </template>
                     
                     <template v-if="column.dataIndex === 'action'">
                         <div class="text-nowrap">
                             <RouterLink :to="{ path: `/artists/${record.id}/musics` }">
-                                <EyeOutlined class="text-blue-700 cursor-pointer me-2" />
+                                <a-tooltip ref="popover" placement="top" :title="'View Music'">
+                                    <EyeOutlined class="text-blue-700 cursor-pointer me-2" />
+                                </a-tooltip>
                             </RouterLink>
         
                             <RouterLink :to="{ path: `/artists/edit/${record.id}` }">

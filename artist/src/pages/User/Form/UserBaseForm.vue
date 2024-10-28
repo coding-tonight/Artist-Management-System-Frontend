@@ -133,7 +133,7 @@
                 <a-form-item
                label="Password"
                name="password"
-               :rules="[{ required: true, min: 6, message: 'Please input your password!' }]"
+               :rules="[{ required: true, message: 'Please input your password!' }]"
              >
                <a-input-password v-model:value="formState.password" placeholder="password">
                  <template #prefix>

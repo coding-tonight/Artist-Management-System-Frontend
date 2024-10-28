@@ -109,7 +109,7 @@
                    >
                     {{ route.params && route.params.id ? 'Update': 'Create'}}
                   </a-button>
-                  <RouterLink to="/users">
+                  <RouterLink to="/artists">
                     <a-button
                       class="ms-2"
                      >

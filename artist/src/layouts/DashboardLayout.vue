@@ -12,7 +12,7 @@
           <a-button v-else class="trigger border-none shadow-none" @click="() => (collapsed = !collapsed)">
             <MenuUnfoldOutlined  />
           </a-button>
-          <a-dropdown :trigger="['click']" :placement="'bottomLeft'" class="cursor-pointer">
+          <a-dropdown :trigger="['click']" :placement="'bottomLeft'" class="cursor-pointer me-2">
             <a-avatar 
               size="large" 
               :style="{ 

@@ -122,7 +122,6 @@ export const artistMusicTableHeader = [
   {
     title: 'Title',
     dataIndex: 'title',
-    sorter: true,
   },
   {
     title: 'Album Name',

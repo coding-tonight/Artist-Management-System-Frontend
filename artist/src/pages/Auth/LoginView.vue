@@ -16,7 +16,6 @@
            <a-form-item
              label="Email"
              name="email"
-             has-feedback
              :rules="[{ required: true, message: 'Please input your email!' }]"
            >
              <a-input v-model:value="formState.email" placeholder="example@gmail.com">
@@ -29,7 +28,6 @@
            <a-form-item
              label="Password"
              name="password"
-             has-feedback
              :rules="[{ required: true, message: 'Please input your password!' }]"
            >
              <a-input-password v-model:value="formState.password" placeholder="password">

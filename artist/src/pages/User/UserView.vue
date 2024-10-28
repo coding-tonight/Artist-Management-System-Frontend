@@ -73,6 +73,10 @@
                           ARTIST 
                         </a-tag>
                     </template>
+                    <template v-if="column.dataIndex === 'address'">
+                        <div class="text-nowrap">{{ record.address }}</div>
+                    </template>
+                    
                    <template v-if="column.dataIndex === 'action'">
                     <RouterLink :to="{ path: `/users/edit/${record.id}` }">
                         <EditOutlined class="text-green-700 cursor-pointer me-2" />

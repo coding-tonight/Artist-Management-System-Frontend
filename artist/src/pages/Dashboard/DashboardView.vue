@@ -4,7 +4,7 @@
           <a-breadcrumb>
               <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
           </a-breadcrumb>
-      </section>
+        </section>
 
         <a-card>
             Welcome to AMS
@@ -14,8 +14,7 @@
     
     
 <script setup>
-import { DashboardLayout } from '@/layouts';
-
+  import { DashboardLayout } from '@/layouts';
 </script>
 
 <style></style>

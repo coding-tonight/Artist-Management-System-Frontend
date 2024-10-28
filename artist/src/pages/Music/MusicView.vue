@@ -50,6 +50,9 @@
                 @change="handleTableChange"
                 >
                 <template #bodyCell="{ column, record }">
+                    <template v-if="column.dataIndex === 'genre'">
+                        {{ record?.genre.toUpperCase() ?? '-' }}
+                    </template>
                     <template v-if="column.dataIndex === 'action'">
                     <RouterLink :to="{ path: `/musics/edit/${record.id}` }">
                         <EditOutlined class="text-green-700 cursor-pointer me-2" />

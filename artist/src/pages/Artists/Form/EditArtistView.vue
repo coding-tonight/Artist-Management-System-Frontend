@@ -3,7 +3,7 @@
        <section class="flex justify-end mt-2 mb-4">
            <a-breadcrumb>
                <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
-               <a-breadcrumb-item><RouterLink href="/users">Users</RouterLink></a-breadcrumb-item>
+               <a-breadcrumb-item><RouterLink href="/artists">Artists</RouterLink></a-breadcrumb-item>
                <a-breadcrumb-item>Edit</a-breadcrumb-item>
            </a-breadcrumb>
        </section>
